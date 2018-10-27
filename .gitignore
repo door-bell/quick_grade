@@ -1,5 +1,6 @@
 # sample data folder
 submissions
 
-# ignore .csv...
+# ignore .csv/xlsl...
 *.csv
+*.xlsx
