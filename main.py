@@ -8,7 +8,6 @@ import subprocess
 
 # Evaluate parameters before starting
 doTryCompile = False
-print(sys.argv)
 for arg in sys.argv[1:]:
     if arg == "-javac":
         doTryCompile = True
@@ -32,6 +31,9 @@ for file in os.listdir("./"):
     if os.path.isfile(file):
         shutil.move(file, studentdir + "/" + file)
         # print("Moved: " + studentdir + "/" + file)
+
+# Keep a list of everything to compile after this walk.
+filesToCompile = set()
 
 # Now we step through the whole file tree, renaming files appropriately.
 for folderName, subFolders, fileNames in os.walk("./"):
@@ -58,8 +60,21 @@ for folderName, subFolders, fileNames in os.walk("./"):
         newLocation = folderName + "/" + className
         shutil.move(oldLocation, newLocation)
 
-        # Attempt to compile the java files (if -javac is passed).
-        # if doTryCompile:
-        #     exitCode = subprocess.call(["javac", newLocation])
-        #     if exitCode != 0:
-        #         print(newLocation + " failed to compile.")
+        if doTryCompile and newLocation.endswith(".java"):
+            filesToCompile.add(newLocation)
+
+# After the walk, do some operations:
+# javac: compile java files.
+if doTryCompile:
+    failedFiles = []
+    for sourceFile in filesToCompile:
+        # Source file looks like: ./lastfirst/Exercise12_21.java
+        workingDir =  "./" + sourceFile.split("/")[1]
+        filename = sourceFile.split("/")[2]
+
+        exitCode = subprocess.call(["javac", filename],
+                                cwd=workingDir)
+        if exitCode != 0:
+            failedFiles.append(sourceFile)
+    for filePath in failedFiles:
+        print(filePath + " failed to compile.")
