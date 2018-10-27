@@ -1,8 +1,17 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import shutil
 import re
+import subprocess
+
+# Evaluate parameters before starting
+doTryCompile = False
+print(sys.argv)
+for arg in sys.argv[1:]:
+    if arg == "-javac":
+        doTryCompile = True
 
 # Set of student names:
 students = set()
@@ -45,5 +54,12 @@ for folderName, subFolders, fileNames in os.walk("./"):
 
         # Rename the files to their "real" names that should compile...
         # print("Renaming " + folderName + "/" + filename + " to " +folderName + "/" + className)
-        shutil.move(folderName + "/" + filename, folderName + "/" + className)
+        oldLocation = folderName + "/" + filename
+        newLocation = folderName + "/" + className
+        shutil.move(oldLocation, newLocation)
 
+        # Attempt to compile the java files (if -javac is passed).
+        # if doTryCompile:
+        #     exitCode = subprocess.call(["javac", newLocation])
+        #     if exitCode != 0:
+        #         print(newLocation + " failed to compile.")
