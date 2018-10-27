@@ -1,5 +1,5 @@
 # sample data folder
-./submissions
+submissions
 
 # ignore .csv...
 *.csv
