@@ -1,6 +1,6 @@
 # TODO:
 
-1. Rename files and place them in folders for each student.
+1. ~~Rename files and place them in folders for each student.~~
 
 2. Automatically generate grade sheet for each student.
 
