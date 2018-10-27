@@ -22,13 +22,13 @@ for file in os.listdir("./"):
     # Move student file to their directory that should exist by now.
     if os.path.isfile(file):
         shutil.move(file, studentdir + "/" + file)
-        print("Moved: " + studentdir + "/" + file)
+        # print("Moved: " + studentdir + "/" + file)
 
 # Now we step through the whole file tree, renaming files appropriately.
 for folderName, subFolders, fileNames in os.walk("./"):
     # print("Processing folder: " + folderName)
 
-    # Reference filename: buchanlogan_late_4145_839726_Exercise11_01-1.java
+    # Reference filename: lastfirst_late_4145_839726_Exercise11_01-1.java
     for filename in fileNames:
         # Piece together file names
         fileSplit = filename.split("_")
@@ -46,3 +46,4 @@ for folderName, subFolders, fileNames in os.walk("./"):
         # Rename the files to their "real" names that should compile...
         # print("Renaming " + folderName + "/" + filename + " to " +folderName + "/" + className)
         shutil.move(folderName + "/" + filename, folderName + "/" + className)
+
