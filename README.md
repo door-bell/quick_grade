@@ -4,6 +4,8 @@
 
 2. Automatically generate grade sheet for each student.
 
-3. Automatically attempt to compile each.
+3. ~~Automatically attempt to compile each submission.~~
 
 4. After automatic compile, update grade sheet accordingly.
+
+5. Refactor argument parsing, have user pass an extension (zip, java, or multuple) and process the files accordingly.
