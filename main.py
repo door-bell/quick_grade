@@ -5,6 +5,7 @@ import sys
 import shutil
 import re
 import subprocess
+import zipfile as zf
 
 # Evaluate parameters before starting
 argSet = set()
@@ -69,11 +70,11 @@ for folderName, subFolders, fileNames in os.walk("./"):
         elif className.endswith(".zip"):
             zipFilesToUnzip.add(className)
 
-# After the walk, do some operations:
+# After the walk, do some operations.
+# The file names in each set look like: ./lastfirst/Exercise12_21.java
 # java: attempt to compile java files.
 if "java" in argSet:
     for sourceFile in javaFilesToCompile:
-        # Source file looks like: ./lastfirst/Exercise12_21.java
         workingDir =  "./" + sourceFile.split("/")[1]
         filename = sourceFile.split("/")[2]
 
@@ -84,8 +85,14 @@ if "java" in argSet:
 
 # zip: unzip submitted zip files.
 if "zip" in argSet:
-    for zipFile in zipFilesToUnzip:
-        print(zipFile)
+    for zipFileName in zipFilesToUnzip:
+        try:
+            zipFile = zf.ZipFile(zipFileName, "r")
+            targetDir = "./" + zipFileName.split("/")[1]
+            zipFile.extractall(targetDir)
+            zipFile.close()
+        except: 
+            outputMessages.append("[zip] " + zipFileName + " failed to extract.")
 
 # Sort and display output messages.
 outputMessages.sort()
