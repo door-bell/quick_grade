@@ -7,19 +7,19 @@ import re
 import subprocess
 
 # Evaluate parameters before starting
-doTryCompile = False
+argSet = set()
 for arg in sys.argv[1:]:
-    if arg == "-javac":
-        doTryCompile = True
+    argSet.add(arg)
 
 # Set of student names:
 students = set()
+# Messages to output at the end of everything:
+outputMessages = []
 
 # Add students to set and make folders for each of them.
 for file in os.listdir("./"):
     student = file.split("_")[0]
-    if (file.endswith('.java')):
-        students.add(student)
+    students.add(student)
 
     # Make directory for the student...
     studentdir = "./" + student
@@ -30,7 +30,6 @@ for file in os.listdir("./"):
     # Move student file to their directory that should exist by now.
     if os.path.isfile(file):
         shutil.move(file, studentdir + "/" + file)
-        # print("Moved: " + studentdir + "/" + file)
 
 # Keep a list of everything to compile after this walk.
 filesToCompile = set()
@@ -60,13 +59,12 @@ for folderName, subFolders, fileNames in os.walk("./"):
         newLocation = folderName + "/" + className
         shutil.move(oldLocation, newLocation)
 
-        if doTryCompile and newLocation.endswith(".java"):
+        if newLocation.endswith(".java"):
             filesToCompile.add(newLocation)
 
 # After the walk, do some operations:
-# javac: compile java files.
-if doTryCompile:
-    failedFiles = []
+# java: attempt to compile java files.
+if "java" in argSet:
     for sourceFile in filesToCompile:
         # Source file looks like: ./lastfirst/Exercise12_21.java
         workingDir =  "./" + sourceFile.split("/")[1]
@@ -75,6 +73,9 @@ if doTryCompile:
         exitCode = subprocess.call(["javac", filename],
                                 cwd=workingDir)
         if exitCode != 0:
-            failedFiles.append(sourceFile)
-    for filePath in failedFiles:
-        print(filePath + " failed to compile.")
+            outputMessages.append("[javac] Failed to compile: " + sourceFile)
+
+# Sort and display output messages.
+outputMessages.sort()
+for message in outputMessages:
+    print(message)
