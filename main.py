@@ -16,6 +16,10 @@ students = set()
 # Messages to output at the end of everything:
 outputMessages = []
 
+# List of files to compile, unzip, and do other operations to
+javaFilesToCompile = set()
+zipFilesToUnzip = set()
+
 # Add students to set and make folders for each of them.
 for file in os.listdir("./"):
     student = file.split("_")[0]
@@ -30,9 +34,6 @@ for file in os.listdir("./"):
     # Move student file to their directory that should exist by now.
     if os.path.isfile(file):
         shutil.move(file, studentdir + "/" + file)
-
-# Keep a list of everything to compile after this walk.
-filesToCompile = set()
 
 # Now we step through the whole file tree, renaming files appropriately.
 for folderName, subFolders, fileNames in os.walk("./"):
@@ -60,12 +61,14 @@ for folderName, subFolders, fileNames in os.walk("./"):
         shutil.move(oldLocation, newLocation)
 
         if newLocation.endswith(".java"):
-            filesToCompile.add(newLocation)
+            javaFilesToCompile.add(newLocation)
+        elif newLocation.endswith(".zip"):
+            zipFilesToUnzip.add(newLocation)
 
 # After the walk, do some operations:
 # java: attempt to compile java files.
 if "java" in argSet:
-    for sourceFile in filesToCompile:
+    for sourceFile in javaFilesToCompile:
         # Source file looks like: ./lastfirst/Exercise12_21.java
         workingDir =  "./" + sourceFile.split("/")[1]
         filename = sourceFile.split("/")[2]
@@ -74,6 +77,11 @@ if "java" in argSet:
                                 cwd=workingDir)
         if exitCode != 0:
             outputMessages.append("[javac] Failed to compile: " + sourceFile)
+
+# zip: unzip submitted zip files.
+if "zip" in argSet:
+    for zipFile in zipFilesToUnzip:
+        print(zipFile)
 
 # Sort and display output messages.
 outputMessages.sort()
