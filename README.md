@@ -1,11 +1,33 @@
+# Quick Grade
+
+# Usage:
+```
+./main.py [options]
+    Available options:
+        java: compile any .java submissions.
+        zip: unzip any .zip submissions.
+```
+
+What quick grade does not do:
+
+1. All of the work for you.
+
+What quick grade does do:
+
+1. Organizes student submissions into their own folders.
+
+2. Renames files to their original names.
+
+3. Notifies you of assigments that were submitted late.
+
+4. Automatically compiles .java files, and notifies you of compilation failures. (javac must be in your system path)
+
+5. Automatically unzips .zip files and places their contents in their own subfolders.
+
 # TODO:
 
-1. ~~Rename files and place them in folders for each student.~~
+1. Modularize the script to allow for scalability.
 
-2. Automatically generate grade sheet for each student.
+2. Automatically generate grade sheet for each student (xlsx).
 
-3. ~~Automatically attempt to compile each submission.~~
-
-4. After automatic compile, update grade sheet accordingly.
-
-5. Refactor argument parsing, have user pass an extension (zip, java, or multuple) and process the files accordingly.
+3. Sometimes, .zips might contain .java files, or even more .zip files: recursive processing of files.
