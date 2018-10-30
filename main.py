@@ -87,8 +87,10 @@ if "java" in argSet:
 if "zip" in argSet:
     for zipFileName in zipFilesToUnzip:
         try:
+            zipFileNameSplit = zipFileName.split("/")
             zipFile = zf.ZipFile(zipFileName, "r")
-            targetDir = "./" + zipFileName.split("/")[1]
+            # ./lastfirst/zipfilename/
+            targetDir = "./" + zipFileNameSplit[1] + "/" + zipFileNameSplit[2].split(".")[0]
             zipFile.extractall(targetDir)
             zipFile.close()
         except Exception, e: 
