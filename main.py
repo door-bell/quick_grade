@@ -68,7 +68,7 @@ for folderName, subFolders, fileNames in os.walk("./"):
         if className.endswith(".java"):
             javaFilesToCompile.add(className)
         elif className.endswith(".zip"):
-            zipFilesToUnzip.add(className)
+            zipFilesToUnzip.add(dirName + className)
 
 # After the walk, do some operations.
 # The file names in each set look like: ./lastfirst/Exercise12_21.java
@@ -91,8 +91,8 @@ if "zip" in argSet:
             targetDir = "./" + zipFileName.split("/")[1]
             zipFile.extractall(targetDir)
             zipFile.close()
-        except: 
-            outputMessages.append("[zip] " + zipFileName + " failed to extract.")
+        except Exception, e: 
+            outputMessages.append("[zip] " + zipFileName + " failed to extract: " + e)
 
 # Sort and display output messages.
 outputMessages.sort()
