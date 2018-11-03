@@ -66,7 +66,7 @@ for folderName, subFolders, fileNames in os.walk("./"):
         shutil.move(dirName + filename, dirName + className)
 
         if className.endswith(".java"):
-            javaFilesToCompile.add(className)
+            javaFilesToCompile.add(dirName + className)
         elif className.endswith(".zip"):
             zipFilesToUnzip.add(dirName + className)
 
